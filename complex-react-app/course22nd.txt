@@ -1,0 +1,11 @@
+Choosing The Right Approach For You
+Hello everyone,
+
+If you want the flexibility to be able to share your app with the entire world publicly at the end of this course, then you will indeed want to work through the next few lessons.
+
+However, if you have zero desire to actually launch your app publicly, and you're perfectly happy to just have your app on your own personal computer for your own private educational purposes, then you can skip the next several videos and jump right into Lecture #27 which is titled Optional Alternative: Simple Docker Back-End.
+
+That alternative approach is much simpler and does not require you to sign up for and configure a MongoDB Atlas account.
+
+Thanks!
+Brad
