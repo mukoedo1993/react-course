@@ -17,6 +17,10 @@ function HeaderLoggedOut(props) {
         //If response.data exists
         console.log(response.data)
 
+        localStorage.setItem("complexappToken", response.data.token)
+        localStorage.setItem("complexappUsername", response.data.username)
+        localStorage.setItem("complexappAvatar", response.data.avatar)
+
         props.setLoggedIn(true)
       } else {
         //If response doesn't exist
