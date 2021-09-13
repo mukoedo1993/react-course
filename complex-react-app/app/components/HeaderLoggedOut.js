@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react"
 
 import Axios from "axios"
 
-function HeaderLoggedOut() {
+function HeaderLoggedOut(props) {
   const [username, setUsername] = useState()
   const [password, setPassword] = useState()
 
@@ -16,6 +16,8 @@ function HeaderLoggedOut() {
       if (response.data) {
         //If response.data exists
         console.log(response.data)
+
+        props.setLoggedIn(true)
       } else {
         //If response doesn't exist
         console.log("Incorrect Username / password")
