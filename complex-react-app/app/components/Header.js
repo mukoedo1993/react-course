@@ -15,7 +15,7 @@ function Header() {
           </Link>
         </h4>
         {/* So that our HeaderLoggedOut component could have access to the setLoggedIn */}
-        {loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
+        {loggedIn ? <HeaderLoggedIn setLoggedIn={setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={setLoggedIn} />}
       </div>
     </header>
   )
