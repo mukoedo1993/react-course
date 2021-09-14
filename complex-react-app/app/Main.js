@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter, Switch, Route } from "react-router-dom"
 
 //My Components
 import Header from "./components/Header"
+import Home from "./components/Home"
 import HomeGuest from "./components/HomeGuest"
 import Footer from "./components/Footer"
 
@@ -11,12 +12,14 @@ import About from "./components/About"
 import Terms from "./components/Terms"
 
 function Main() {
+  const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("complexappToken")))
+
   return (
     <BrowserRouter>
-      <Header />
+      <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> {/*Our header depends on loggedIn and setLoggedIn*/}
       <Switch>
         <Route path="/" exact>
-          <HomeGuest />
+          {loggedIn ? <Home /> : <HomeGuest />}
         </Route>
         <Route path="/about-us" exact>
           <About />
