@@ -4,19 +4,23 @@
 import React, { useEffect, useState } from "react"
 import Page from "./Page"
 import Axios from "axios"
+import { withRouter } from "react-router-dom"
 
-function CreatePost() {
+function CreatePost(props) {
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
 
   async function handleSubmit(e) {
     e.preventDefault()
     try {
-      await Axios.post("/create-post", { title, body, token: localStorage.getItem("complexappToken") })
+      const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("complexappToken") })
 
       //We want to give the server our title, content and our token when we submit data to the server.
 
       //The token let the server know whether we are actually we.
+
+      //Redirect to the new post URL
+      props.history.push(`/post/${response.data}`)
 
       console.log("New post was created.")
     } catch (e) {
@@ -47,4 +51,6 @@ function CreatePost() {
   )
 }
 
-export default CreatePost
+export default withRouter(CreatePost) //If we use withRouter like this, it will create a component uses CreatePost as meat and potatoes.
+// But react is going to pass it all sorts of useful things regarding the Router and the history. That's going to pass that into this component
+// through props.
