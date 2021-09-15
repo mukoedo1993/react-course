@@ -1,14 +1,18 @@
 //https://github.com/LearnWebCode/react-course/blob/master/html-templates/create-post.html
 //line 42 to line 58
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Page from "./Page"
 import Axios from "axios"
 import { withRouter } from "react-router-dom"
 
+import ExampleContext from "../ExampleContext"
+
 function CreatePost(props) {
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
+
+  const { addFlashMessage } = useContext(ExampleContext) //To actually use context. We need destcuture this, because now, it returns an object.
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -20,7 +24,7 @@ function CreatePost(props) {
       //The token let the server know whether we are actually we.
 
       //Redirect to the new post URL
-      props.addFlashMessage("Congrats! You successfully created a post.")
+      addFlashMessage("Congrats! You successfully created a post!")
       props.history.push(`/post/${response.data}`)
 
       console.log("New post was created.")
