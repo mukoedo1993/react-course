@@ -16,12 +16,19 @@ import Terms from "./components/Terms"
 import CreatePost from "./components/CreatePost"
 
 import ViewSinglePost from "./components/ViewSinglePost"
+import FlashMessages from "./components/FlashMessages"
 
 function Main() {
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("complexappToken")))
+  const [flashMessages, setFlashMessages] = useState([])
+
+  function addFlashMessage(msg) {
+    setFlashMessages((prev) => prev.concat(msg))
+  }
 
   return (
     <BrowserRouter>
+      <FlashMessages messages={flashMessages} />
       <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn} /> {/*Our header depends on loggedIn and setLoggedIn*/}
       <Switch>
         <Route path="/" exact>
@@ -32,7 +39,7 @@ function Main() {
         </Route>{" "}
         {/*:id works like a variable, unique to each single post. */}
         <Route path="/create-post">
-          <CreatePost />
+          <CreatePost addFlashMessage={addFlashMessage} />
         </Route>
         <Route path="/about-us" exact>
           <About />

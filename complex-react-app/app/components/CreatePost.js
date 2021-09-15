@@ -20,6 +20,7 @@ function CreatePost(props) {
       //The token let the server know whether we are actually we.
 
       //Redirect to the new post URL
+      props.addFlashMessage("Congrats! You successfully created a post.")
       props.history.push(`/post/${response.data}`)
 
       console.log("New post was created.")
