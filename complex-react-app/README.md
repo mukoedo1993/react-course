@@ -15,5 +15,11 @@
   npm install axios
 ```
 
+```
+course 41st
+npm install immer use-immer
+
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
