@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 
-import ExampleContext from "../ExampleContext"
-
 import HeaderLoggedOut from "./HeaderLoggedOut"
 import HeaderLoggedIn from "./HeaderLoggedIn"
 
+import StateContext from "../StateContext"
+
 function Header(props) {
-  const { setLoggedIn } = useContext(ExampleContext) //destructure
+  const appState = useContext(StateContext)
 
   return (
     <header className="header-bar bg-primary mb-3">
@@ -18,7 +18,7 @@ function Header(props) {
           </Link>
         </h4>
         {/* So that our HeaderLoggedOut component could have access to the setLoggedIn, even without declared below, as soon as we set it as context. */}
-        {props.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+        {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
       </div>
     </header>
   )

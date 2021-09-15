@@ -6,13 +6,13 @@ import Page from "./Page"
 import Axios from "axios"
 import { withRouter } from "react-router-dom"
 
-import ExampleContext from "../ExampleContext"
+import DispatchContext from "../DispatchContext"
 
 function CreatePost(props) {
   const [title, setTitle] = useState()
   const [body, setBody] = useState()
 
-  const { addFlashMessage } = useContext(ExampleContext) //To actually use context. We need destcuture this, because now, it returns an object.
+  const appDispatch = useContext(DispatchContext)
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -24,7 +24,8 @@ function CreatePost(props) {
       //The token let the server know whether we are actually we.
 
       //Redirect to the new post URL
-      addFlashMessage("Congrats! You successfully created a post!")
+      appDispatch({ type: "flashMessage", value: "Congrats, you created a new post" })
+
       props.history.push(`/post/${response.data}`)
 
       console.log("New post was created.")

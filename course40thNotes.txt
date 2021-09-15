@@ -1,0 +1,67 @@
+//The basic logic for useReducer
+// Main.js:
+//...
+function Main() {
+  const initialState = {
+    loggedIn: Boolean(localStorage.getItem("complexappToken")),
+    flashMessages: [],
+  }
+
+  function ourReducer(state, action) {
+    switch (action.type) {
+      case "login":
+        return { loggedIn: true, flashMessages: state.flashMessages }
+      case "logout":
+        return { loggedIn: false, flashMessages: state.flashMessages }
+      case "flashMessage":
+        return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) } //Take previous value and concating
+    }
+  }
+
+  const [state, dispatch] = useReducer(ourReducer, initialState)
+
+  return (
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+      //...
+-------------------------------------------------------------------------------------------------------------
+
+// Header.js
+//...
+ const appState = useContext(StateContext)
+ //...
+-------------------------------------------------------------------------------------------------------------
+
+//DispatchContext.js
+import { createContext } from "react"
+
+const DispatchContext = createContext()
+
+export default DispatchContext
+
+//StateContext.js is given in a similar way.
+-------------------------------------------------------------------------------------------------------------
+//HeaderLoggedIn.js
+...
+function HeaderLoggedIn(props) {
+  const appDispatch = useContext(DispatchContext)
+
+  function handleLogout() {
+    appDispatch({ type: "logout" }) //The type of action we want to dispatch
+    localStorage.removeItem("complexappToken")
+    localStorage.removeItem("complexappUsername")
+    localStorage.removeItem("complexappAvatar")
+  }
+  return (...
+ <button onClick={handleLogout} className="btn btn-sm btn-secondary">
+  ...)
+  //HeaderLoggedOut is given in a similar way.
+----------------------------------------------------------------------------------------------------------------
+//CreatePost.js
+  const appDispatch = useContext(DispatchContext)
+
+  async function handleSubmit(e) {
+    //...
+      appDispatch({ type: "flashMessage", value: "Congrats, you created a new post" })
+//...
+---------
