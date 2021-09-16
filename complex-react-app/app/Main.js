@@ -78,6 +78,8 @@ function Main() {
           <Header /> {/*Our header depends on loggedIn and setLoggedIn*/}
           <Switch>
             <Route path="/profile/:username">
+              {" "}
+              {/*path's parameter username is acceeeible by useParams. Ref: https://reactrouter.com/web/api/Hooks/useparams*/}
               <Profile />
             </Route>
             <Route path="/" exact>

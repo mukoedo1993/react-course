@@ -9,7 +9,7 @@ import Axios from "axios"
 import StateContext from "../StateContext"
 
 function Profile() {
-  const { username } = useParams()
+  const { username } = useParams() //https://reactrouter.com/web/api/Hooks/useparams   //We need to destructing it.
 
   const appState = useContext(StateContext)
 
