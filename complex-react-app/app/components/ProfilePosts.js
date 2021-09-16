@@ -5,6 +5,8 @@ import Axios from "axios"
 
 import { useParams, Link } from "react-router-dom"
 
+import LoadingDotsIcon from "./LoadingDotsIcon" //animated loading icon
+
 function ProfilePosts() {
   const { username } = useParams()
 
@@ -27,7 +29,7 @@ function ProfilePosts() {
   }, [])
   //Create a state store all
 
-  if (isLoading) return <div>loading...</div>
+  if (isLoading) return <LoadingDotsIcon />
   return (
     <div className="list-group">
       {posts.map((post) => {
