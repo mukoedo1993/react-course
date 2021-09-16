@@ -25,6 +25,8 @@ import CreatePost from "./components/CreatePost"
 import ViewSinglePost from "./components/ViewSinglePost"
 import FlashMessages from "./components/FlashMessages"
 
+import Profile from "./components/Profile"
+
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
@@ -75,6 +77,9 @@ function Main() {
           <FlashMessages messages={state.flashMessages} />
           <Header /> {/*Our header depends on loggedIn and setLoggedIn*/}
           <Switch>
+            <Route path="/profile/:username">
+              <Profile />
+            </Route>
             <Route path="/" exact>
               {state.loggedIn ? <Home /> : <HomeGuest />}
             </Route>
