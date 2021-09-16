@@ -21,11 +21,11 @@ function HeaderLoggedOut(props) {
         //If response.data exists
         console.log(response.data)
 
-        localStorage.setItem("complexappToken", response.data.token)
-        localStorage.setItem("complexappUsername", response.data.username)
-        localStorage.setItem("complexappAvatar", response.data.avatar)
+        // localStorage.setItem("complexappToken", response.data.token)
+        //localStorage.setItem("complexappUsername", response.data.username)
+        //localStorage.setItem("complexappAvatar", response.data.avatar)
 
-        appDispatch({ type: "login" })
+        appDispatch({ type: "login", data: response.data })
       } else {
         //If response doesn't exist
         console.log("Incorrect Username / password")

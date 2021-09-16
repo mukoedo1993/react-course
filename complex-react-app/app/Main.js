@@ -29,12 +29,18 @@ function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
     flashMessages: [],
+    user: {
+      token: localStorage.getItem("complexappToken"),
+      username: localStorage.getItem("complexappUsername"),
+      avatar: localStorage.getItem("complexappAvatar"),
+    },
   }
 
   function ourReducer(draft, action) {
     switch (action.type) {
       case "login":
         draft.loggedIn = true
+        draft.user = action.data
         return
       case "logout":
         draft.loggedIn = false
@@ -46,6 +52,18 @@ function Main() {
   }
 
   const [state, dispatch] = useImmerReducer(ourReducer, initialState)
+
+  React.useEffect(() => {
+    if (state.loggedIn) {
+      localStorage.setItem("complexappToken", state.user.token)
+      localStorage.setItem("complexappUsername", state.user.username)
+      localStorage.setItem("complexappAvatar", state.user.avatar)
+    } else {
+      localStorage.removeItem("complexappToken")
+      localStorage.removeItem("complexappUsername")
+      localStorage.removeItem("complexappAvatar")
+    }
+  }, [state.loggedIn])
 
   return (
     <StateContext.Provider value={state}>
