@@ -1,0 +1,8 @@
+a component might add keyboard bindings so to listen for a certain key to be pressed, 
+or, perhaps a full screen search overlay you want to bind an action to when a user press the space key to close
+that user model. But once this component is no longer rendered, you want to remove the keyboard listener.  
+Essentially, the cleanup function is just a chance you pick up after yourself[1], after the component is no longer being used.
+
+
+
+[1]:pick up after oneself: to clean the mess created by (someone)
