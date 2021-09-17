@@ -7,6 +7,8 @@ import Axios from "axios"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
 
+import ReactMarkdown from "react-markdown"
+
 function ViewSinglePost() {
   const { id } = useParams()
 
@@ -63,9 +65,13 @@ function ViewSinglePost() {
         Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on {dateFormatted}
       </p>
 
-      <div className="body-content">{post.body}</div>
+      <div className="body-content">
+        {" "}
+        <ReactMarkdown children={post.body} />
+      </div>
     </Page>
   )
 }
 
 export default ViewSinglePost
+//  <ReactMarkdown children={post.body} />{" "}

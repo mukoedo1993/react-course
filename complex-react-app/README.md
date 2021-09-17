@@ -21,5 +21,11 @@ npm install immer use-immer
 
 ```
 
+```
+course 48th
+npm install react-markdown@6.0.0 #Newest version could not work well...
+
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
