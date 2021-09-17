@@ -24,18 +24,23 @@ function Profile() {
   })
 
   useEffect(() => {
+    const ourRequest_ = Axios.CancelToken.source() //To distinguish Profile's ourRequest, we add an underscore here.
     async function fetchData() {
       try {
-        const response = await Axios.post(`/profile/${username}`, { token: appState.user.token })
+        const response = await Axios.post(`/profile/${username}`, { token: appState.user.token }, { cancelToken: ourRequest_.token })
 
         setProfileData(response.data) //If there is anything changed in response.data
-
+        console.log("Profile.js test!")
         console.log(response.data)
       } catch (e) {
-        console.log("There was a problem.")
+        console.log("There was a problems in Profile.js and was caught.")
       }
     }
     fetchData()
+
+    return () => {
+      ourRequest_.cancel()
+    }
   }, []) // Only run the first argument's function the first time it is run.
 
   return (

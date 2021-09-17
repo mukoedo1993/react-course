@@ -15,17 +15,22 @@ function ProfilePosts() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
+    const ourRequest = Axios.CancelToken.source()
+
     async function fetchPosts() {
       try {
-        const response = await Axios.get(`/profile/${username}/posts`)
+        const response = await Axios.get(`/profile/${username}/posts`, { cancelToken: ourRequest.token })
 
         setPosts(response.data)
         setIsLoading(false) //Here, we want to show loaded contents.
       } catch (e) {
-        console.log("There was a problem.")
+        console.log("There was a problem in ProfilePosts.js and was caught.")
       }
     }
     fetchPosts()
+    return () => {
+      ourRequest.cancel()
+    }
   }, [])
   //Create a state store all
 
