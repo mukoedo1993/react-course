@@ -1,4 +1,4 @@
-My solutions for Mr Brat's assignments:
+My solutions for Mr Brat's assignments:<br>
 In his assignments, we need to modify `useEffects` function in two files below:
 
 ```
