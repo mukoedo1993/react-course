@@ -51,10 +51,10 @@ function ViewSinglePost() {
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
         <span className="pt-2">
-          <a href="#" data-tip="Edit" data-for="edit" className="text-primary mr-2">
+          <Link to={`/post/${post._id}/edit`} data-tip="Edit" data-for="edit" className="text-primary mr-2">
             {/*we do not need the title property here for the enclosing anchor element.*/}
             <i className="fas fa-edit"></i>
-          </a>
+          </Link>
           <ReactTooltip id="edit" className="custom-tooltip" />{" "}
           <a data-tip="Delete" data-for="delete" className="delete-post-button text-danger" style={{ backgroundColor: "pink" }}>
             <i className="fas fa-trash"></i>
