@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Page from "./Page"
 
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, withRouter } from "react-router-dom"
 
 import Axios from "axios"
 
@@ -13,7 +13,15 @@ import ReactTooltip from "react-tooltip"
 
 import NotFound from "./NotFound"
 
-function ViewSinglePost() {
+import StateContext from "../StateContext"
+
+import DispatchContext from "../DispatchContext"
+
+function ViewSinglePost(props) {
+  const appState = useContext(StateContext)
+
+  const appDispatch = useContext(DispatchContext)
+
   const { id } = useParams()
 
   const [isLoading, setIsLoading] = useState(true)
@@ -53,21 +61,51 @@ function ViewSinglePost() {
   const date = new Date(post.createdDate)
   const dateFormatted = `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`
 
+  function isOwner() {
+    if (appState.loggedIn) {
+      return appState.user.username == post.author.username
+    }
+    return false
+  }
+
+  async function deleteHandler() {
+    const areYouSure = window.confirm("Do you really want to delete this post?")
+
+    if (areYouSure) {
+      try {
+        const response = await Axios.delete(`/post/${id}`, { data: { token: appState.user.token } })
+
+        if (response.data == "Success") {
+          //If actually deleted from the database
+          //1: display a flash message
+          appDispatch({ type: "flashMessage", value: "Post was successfully deleted" })
+
+          //2: redirect to the current user's profile
+          props.history.push(`/profile/${appState.user.username}`) //We need withRouter to access to the props.history here.
+        }
+      } catch (e) {
+        console.log("There was a problem.")
+      }
+    }
+  }
+
   return (
     <Page title={post.title}>
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
-        <span className="pt-2">
-          <Link to={`/post/${post._id}/edit`} data-tip="Edit" data-for="edit" className="text-primary mr-2">
-            {/*we do not need the title property here for the enclosing anchor element.*/}
-            <i className="fas fa-edit"></i>
-          </Link>
-          <ReactTooltip id="edit" className="custom-tooltip" />{" "}
-          <a data-tip="Delete" data-for="delete" className="delete-post-button text-danger" style={{ backgroundColor: "pink" }}>
-            <i className="fas fa-trash"></i>
-            <ReactTooltip id="delete" className="custom-tooltip" />
-          </a>
-        </span>
+        {isOwner() && (
+          <span className="pt-2">
+            <Link to={`/post/${post._id}/edit`} data-tip="Edit" data-for="edit" className="text-primary mr-2">
+              {/*we do not need the title property here for the enclosing anchor element.*/}
+              <i className="fas fa-edit"></i>
+            </Link>
+            <ReactTooltip id="edit" className="custom-tooltip" />{" "}
+            <a onClick={deleteHandler} data-tip="Delete" data-for="delete" className="delete-post-button text-danger" style={{ backgroundColor: "pink" }}>
+              <i className="fas fa-trash"></i>
+              <ReactTooltip id="delete" className="custom-tooltip" />
+            </a>
+          </span>
+        )}
       </div>
 
       <p className="text-muted small mb-4">
@@ -85,5 +123,5 @@ function ViewSinglePost() {
   )
 }
 
-export default ViewSinglePost
+export default withRouter(ViewSinglePost)
 //  <ReactMarkdown children={post.body} />{" "}
