@@ -7,7 +7,7 @@ import { useImmerReducer } from "use-immer"
 
 import Page from "./Page"
 
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, withRouter } from "react-router-dom"
 
 import Axios from "axios"
 
@@ -17,7 +17,9 @@ import StateContext from "../StateContext"
 
 import DispatchContext from "../DispatchContext" //appwise dispatch
 
-function ViewSinglePost() {
+import NotFound from "./NotFound"
+
+function EditPost(props) {
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
 
@@ -38,6 +40,8 @@ function ViewSinglePost() {
 
     id: useParams().id, //pull the id from the url
     sendCount: 0, //how many times we want to try to send request
+
+    notFound: false,
   }
 
   function ourReducer(draft, action) {
@@ -83,6 +87,10 @@ function ViewSinglePost() {
           draft.body.hasErrors = false
           draft.body.message = ""
         }
+        return
+      case "notFound":
+        draft.notFound = true
+        return
     }
   }
 
@@ -100,8 +108,21 @@ function ViewSinglePost() {
 
     async function fetchPost() {
       try {
+        console.log(appState.user.username)
         const response = await Axios.get(`/post/${state.id}`, { cancelToken: ourRequest.token })
-        dispatch({ type: "fetchComplete", value: response.data })
+        console.log(response.data.author.username)
+        if (response.data) {
+          dispatch({ type: "fetchComplete", value: response.data })
+
+          if (appState.user.username != response.data.author.username) {
+            appDispatch({ type: "flashMessage", value: "You do not have permission to edit that post." })
+
+            //redirect to homepage
+            props.history.push("/")
+          }
+        } else {
+          dispatch({ type: "notFound" })
+        }
       } catch (e) {
         console.log("There was a problem or the request was canceled. Detected in ViewSinglePost.js file")
       }
@@ -133,6 +154,11 @@ function ViewSinglePost() {
     }
   }, [state.sendCount])
 
+  //404
+  if (state.notFound) {
+    return <NotFound />
+  }
+
   if (state.isFetching)
     return (
       <Page title="...">
@@ -142,7 +168,12 @@ function ViewSinglePost() {
 
   return (
     <Page title="Edit Post">
-      <form onSubmit={submitHandler}>
+      <Link className="small font-weight-bold" to={`/post/${state.id}`}>
+        &laquo; Back to post permalink
+      </Link>
+      <form className="mt-3" onSubmit={submitHandler}>
+        {" "}
+        {/*mt: margin-top*/}
         <div className="form-group">
           <label htmlFor="post-title" className="text-muted mb-1">
             <small>Title</small>
@@ -150,7 +181,6 @@ function ViewSinglePost() {
           <input onBlur={(e) => dispatch({ type: "titleRules", value: e.target.value })} onChange={(e) => dispatch({ type: "titleChange", value: e.target.value })} value={state.title.value} autoFocus name="title" id="post-title" className="form-control form-control-lg form-control-title" type="text" placeholder="" autoComplete="off" />
           {state.title.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.title.message}</div>}
         </div>
-
         <div className="form-group">
           <label htmlFor="post-body" className="text-muted mb-1 d-block">
             <small>Body Content</small>
@@ -158,7 +188,6 @@ function ViewSinglePost() {
           <textarea onBlur={(e) => dispatch({ type: "bodyRules", value: e.target.value })} onChange={(e) => dispatch({ type: "bodyChange", value: e.target.value })} name="body" id="post-body" className="body-content tall-textarea form-control" type="text" value={state.body.value}></textarea>
           {state.body.hasErrors && <div className="alert alert-danger small liveValidateMessage">{state.body.message}</div>}
         </div>
-
         <button className="btn btn-primary" disabled={state.isSaving}>
           {state.isSaving ? "Saved" : "Saving updates"}
         </button>
@@ -167,4 +196,4 @@ function ViewSinglePost() {
   )
 }
 
-export default ViewSinglePost
+export default withRouter(EditPost)

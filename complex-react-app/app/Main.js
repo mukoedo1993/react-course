@@ -29,6 +29,8 @@ import Profile from "./components/Profile"
 
 import EditPost from "./components/EditPost"
 
+import NotFound from "./components/NotFound"
+
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("complexappToken")),
@@ -102,6 +104,10 @@ function Main() {
             </Route>
             <Route path="/terms" exact>
               <Terms />
+            </Route>
+            {/*last Route below is our fallback route*/}
+            <Route>
+              <NotFound />
             </Route>
           </Switch>
           <Footer />

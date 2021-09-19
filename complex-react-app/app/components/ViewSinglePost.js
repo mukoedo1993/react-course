@@ -11,6 +11,8 @@ import ReactMarkdown from "react-markdown"
 
 import ReactTooltip from "react-tooltip"
 
+import NotFound from "./NotFound"
+
 function ViewSinglePost() {
   const { id } = useParams()
 
@@ -35,6 +37,11 @@ function ViewSinglePost() {
       ourRequest.cancel()
     }
   }, [])
+
+  if (!isLoading && !post) {
+    //If loading is finished and server couldn't find any valid post
+    return <NotFound />
+  }
 
   if (isLoading)
     return (
