@@ -4,6 +4,9 @@ import ReactDOM from "react-dom"
 import { useImmerReducer } from "use-immer"
 
 import { BrowserRouter, Switch, Route } from "react-router-dom"
+
+import { CSSTransition } from "react-transition-group"
+
 import Axios from "axios"
 
 Axios.defaults.baseURL = "http://localhost:8080"
@@ -119,7 +122,18 @@ function Main() {
               <NotFound />
             </Route>
           </Switch>
-          {state.isSearchOpen ? <Search /> : ""}
+          {/* For the CSSTransition part below:
+          timeout: how many ms does it take for your CSS transition to complete? 330.
+              in: if it is false, then search will be hidden.
+              classNames: NOT className
+              unmountOnExit: when in is false, we don't just want our search component to be invisible or hide our CSS, we actually want to unmount it, or
+              just completely remove it from the DOM. 
+              classNames: first load: '<classNames>-enter' for about {timeout} seconds. Then... '<classNames>-enter-active'. And, immediately you exit it, '<classNames>-exit' class will be added. '<classNames>-exit-active',after a few ms, will be added, i.e., zoom-out effect.
+              After a given time, these classes will be completely moved away from the DOM, includeing the '<classNames>'
+            */}
+          <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
+            <Search />
+          </CSSTransition>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>

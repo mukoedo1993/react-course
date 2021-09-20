@@ -33,5 +33,10 @@ npm install react-tooltip
 
 ```
 
+```
+#course 56th:
+npm install react-transition-group
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
