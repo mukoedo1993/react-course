@@ -44,7 +44,7 @@ function ViewSinglePost(props) {
     return () => {
       ourRequest.cancel()
     }
-  }, [])
+  }, [id])
 
   if (!isLoading && !post) {
     //If loading is finished and server couldn't find any valid post
