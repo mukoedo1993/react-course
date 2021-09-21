@@ -31,7 +31,7 @@ function ProfilePosts() {
     return () => {
       ourRequest.cancel()
     }
-  }, [])
+  }, [username])
   //Create a state store all
 
   if (isLoading) return <LoadingDotsIcon />

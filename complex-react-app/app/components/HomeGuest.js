@@ -17,7 +17,7 @@ function HomeGuest() {
       await Axios.post("/register", { username, email, password }) //when we want value as same as property name, we could omit
       console.log("User was successfully created.")
     } catch (e) {
-      console.log(e.response.error)
+      console.log(e)
     }
   }
 
