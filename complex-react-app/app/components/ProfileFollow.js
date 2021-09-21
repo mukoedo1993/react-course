@@ -1,5 +1,3 @@
-//Show the loading data status for a few seconds, and then load the real content.
-
 import React, { useEffect, useState } from "react"
 import Axios from "axios"
 
@@ -7,7 +5,7 @@ import { useParams, Link } from "react-router-dom"
 
 import LoadingDotsIcon from "./LoadingDotsIcon" //animated loading icon
 
-function ProfilePosts() {
+function ProfileFollow(props) {
   const { username } = useParams()
 
   const [isLoading, setIsLoading] = useState(true)
@@ -19,7 +17,7 @@ function ProfilePosts() {
 
     async function fetchPosts() {
       try {
-        const response = await Axios.get(`/profile/${username}/posts`, { cancelToken: ourRequest.token })
+        const response = await Axios.get(`/profile/${username}/${props.action == "ProfileFollowers" ? "followers" : ""}${props.action == "ProfileFollowing" ? "following" : ""}`, { cancelToken: ourRequest.token })
 
         setPosts(response.data)
         setIsLoading(false) //Here, we want to show loaded contents.
@@ -31,31 +29,28 @@ function ProfilePosts() {
     return () => {
       ourRequest.cancel()
     }
-  }, [username])
+  }, [username, props.action])
   //Create a state store all
 
   if (isLoading) return <LoadingDotsIcon />
   return (
     <div className="list-group">
-      {posts.map((post) => {
-        //Date format:
-        const date = new Date(post.createdDate)
-        const dateFormatted = `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`
-
+      {posts.map((follower, index) => {
         return (
-          <Link key={post._id} to={`/post/${post._id}`} className="list-group-item list-group-item-action">
+          <Link key={index} to={`/profile/${follower.username}`} className="list-group-item list-group-item-action">
             {/*In additional to give us title and body content, our server is also giving unique id for each post.*/}
-            <img className="avatar-tiny" src={post.author.avatar} /> <strong>{post.title}</strong> <span className="text-muted small">on {dateFormatted} </span>
+            <img className="avatar-tiny" src={follower.avatar} /> {follower.username}
           </Link>
         )
       })}
-      {!posts.length && (
-        <h2>
-          This guy is very <strong style={{ color: "red" }}>lazy</strong>. He/She has not created any post yet.
-        </h2>
-      )}
+        {
+          !posts.length && props.action=="ProfileFollowers" && <h2>This guy has not any follower now.</h2>
+        }
+                {
+          !posts.length && props.action=="ProfileFollowing" && <h2>This guy has not followed anyone yet.</h2>
+        }
     </div>
   )
 }
 
-export default ProfilePosts
+export default ProfileFollow

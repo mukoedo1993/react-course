@@ -10,9 +10,11 @@ import StateContext from "../StateContext"
 
 import ProfilePosts from "./ProfilePosts"
 
-import ProfileFollowers from "./ProfileFollowers"
+//import ProfileFollowers from "./ProfileFollowers" //Sunsetting it as assignments
 
-import ProfileFollowing from "./ProfileFollowing"
+//import ProfileFollowing from "./ProfileFollowing" //Sunsetting it as assignments
+
+import ProfileFollow from "./ProfileFollow"
 
 import { useImmer } from "use-immer"
 
@@ -135,7 +137,11 @@ function Profile() {
   return (
     <Page title="Profile Screen">
       <h2>
-        {" "}
+        {!appState.loggedIn && (
+          <div className="alert text-center" style={{ color: "red" }}>
+            Please! Please! Please! Register or login!
+          </div>
+        )}
         {/*https://github.com/LearnWebCode/react-course/blob/master/html-templates/profile-posts.html*/} {/*line 42nd to 72nd*/}
         {/*The user is viewing another user's profile, and has not yet followed.*/}
         <img className="avatar-small" src={state.profileData.profileAvatar} /> {state.profileData.profileUsername}
@@ -168,10 +174,10 @@ function Profile() {
           <ProfilePosts />
         </Route>
         <Route path="/profile/:username/followers">
-          <ProfileFollowers />
+          <ProfileFollow action="ProfileFollowers" />
         </Route>
         <Route path="/profile/:username/following">
-          <ProfileFollowing />
+          <ProfileFollow action="ProfileFollowing" />
         </Route>
       </Switch>
     </Page>
