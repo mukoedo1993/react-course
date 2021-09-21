@@ -43,12 +43,8 @@ function ProfileFollow(props) {
           </Link>
         )
       })}
-        {
-          !posts.length && props.action=="ProfileFollowers" && <h2>This guy has not any follower now.</h2>
-        }
-                {
-          !posts.length && props.action=="ProfileFollowing" && <h2>This guy has not followed anyone yet.</h2>
-        }
+      {!posts.length && props.action == "ProfileFollowers" && <h2>This guy doesn't have any follower now.</h2>}
+      {!posts.length && props.action == "ProfileFollowing" && <h2>This guy has not followed anyone yet.</h2>}
     </div>
   )
 }
