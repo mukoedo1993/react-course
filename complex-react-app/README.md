@@ -38,5 +38,10 @@ npm install react-tooltip
 npm install react-transition-group
 ```
 
+```
+#course 66th:
+npm install socket.io-client
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
