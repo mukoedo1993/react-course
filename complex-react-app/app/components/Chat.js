@@ -9,12 +9,16 @@ import DispatchContext from "../DispatchContext"
 
 import { useImmer } from "use-immer"
 
+import { Link } from "react-router-dom"
+
 import io from "socket.io-client"
 
 const socket = io("http://localhost:8080")
 
 function Chat() {
   const chatField = useRef(null)
+
+  const chatLog = useRef(null)
 
   const appState = useContext(StateContext)
   const appDispatch = useContext(DispatchContext)
@@ -26,6 +30,7 @@ function Chat() {
 
   useEffect(() => {
     if (appState.isChatOpen) {
+      appDispatch({ type: "clearUnreadChatCount" })
       chatField.current.focus()
     }
   }, [appState.isChatOpen])
@@ -37,6 +42,13 @@ function Chat() {
       })
     })
   }, []) //load the already existent messages
+
+  useEffect(() => {
+    chatLog.current.scrollTop = chatLog.current.scrollHeight
+    if (state.chatMessages.length && !appState.isChatOpen) {
+      appDispatch({ type: "incrementUnreadChatCount" })
+    }
+  }, [state.chatMessages]) //Any time the array of chatMessages changes, we want to scroll down its very bottom of its position.
 
   function handleFieldChange(e) {
     const value = e.target.value
@@ -66,12 +78,12 @@ function Chat() {
           <i className="fas fa-times-circle"></i>
         </span>
       </div>
-      <div id="chat" className="chat-log">
+      <div id="chat" className="chat-log" ref={chatLog}>
         {state.chatMessages.map((message, index) => {
           console.log(message)
           if (message.username == appState.user.username)
             return (
-              <div className="chat-self" key={index}>
+              <div key={index} className="chat-self" key={index}>
                 <div className="chat-message">
                   <div className="chat-message-inner">{message.message}</div>
                 </div>
@@ -79,15 +91,15 @@ function Chat() {
               </div>
             )
           return (
-            <div className="chat-other">
-              <a href="#">
+            <div key={index} className="chat-other ">
+              <Link to={`/profile/${message.username}`}>
                 <img className="avatar-tiny" src={message.avatar} />
-              </a>
+              </Link>
               <div className="chat-message">
                 <div className="chat-message-inner">
-                  <a href="#">
-                    <strong>{message.username}:</strong>
-                  </a>
+                  <Link to={`/profile/${message.username}`}>
+                    <strong>{message.username}: </strong>
+                  </Link>
                   {message.message}
                 </div>
               </div>
