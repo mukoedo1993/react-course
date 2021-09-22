@@ -30,7 +30,7 @@ function HeaderLoggedIn(props) {
         <i className="fas fa-search"></i>
       </a>
       <ReactTooltip place="bottom" id="search" className="custom-tooltip" /> {/*Because the search icon is very close to the top, I want to make sure the tooltip is displayed below the icon.*/}{" "}
-      <span data-for="chat" data-tip="Chat" className="mr-2 header-chat-icon text-white">
+      <span onClick={() => appDispatch({ type: "toggleChat" })} data-for="chat" data-tip="Chat" className="mr-2 header-chat-icon text-white">
         <i className="fas fa-comment"></i>
         <span className="chat-count-badge text-white"> </span>
       </span>
