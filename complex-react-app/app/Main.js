@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useReducer, useEffect } from "react"
 import ReactDOM from "react-dom"
 
 import { useImmerReducer } from "use-immer"
@@ -98,6 +98,30 @@ function Main() {
       localStorage.removeItem("complexappAvatar")
     }
   }, [state.loggedIn])
+
+  //Check if token has expired or not on first render:
+  useEffect(() => {
+    if (state.loggedIn) {
+      const ourRequest = Axios.CancelToken.source()
+
+      async function fetchResults() {
+        try {
+          const response = await Axios.post("/checkToken", { token: state.user.token }, { cancelToken: ourRequest.token })
+          if (!response.data) {
+            //if !response.data means our duration has expired
+            dispatch({ type: "logout" })
+            dispatch({ type: "flashMessage", value: "Your session has expired. Please log in again." })
+          }
+        } catch (e) {
+          console.log("There was a problem or the request was cancelled within Main.js file.")
+          console.log(e)
+        }
+      }
+      fetchResults()
+
+      return () => ourRequest.cancel() //Here must be a function for cleanUp
+    }
+  }, [])
 
   return (
     <StateContext.Provider value={state}>
