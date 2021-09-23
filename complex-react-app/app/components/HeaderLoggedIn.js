@@ -15,6 +15,8 @@ function HeaderLoggedIn(props) {
     localStorage.removeItem("complexappToken")
     localStorage.removeItem("complexappUsername")
     localStorage.removeItem("complexappAvatar")
+
+    appDispatch({ type: "flashMessage", value: "You have successfully logged out." })
   }
 
   //Open our search layout
