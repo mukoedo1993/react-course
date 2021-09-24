@@ -51,5 +51,15 @@ npm install express
 npm run previewDist # view the actual value we will view which will be pushed up to the web
 ```
 
+```
+course 78th:
+npm install @babel/node
+```
+
+```
+#course 79th:
+npm install npm-run-all
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
