@@ -9,7 +9,7 @@ import { CSSTransition } from "react-transition-group"
 
 import Axios from "axios"
 
-Axios.defaults.baseURL = "http://localhost:8080"
+Axios.defaults.baseURL = process.env.BACKENDURL || "" //for deploying using DOTENV file.
 
 //Context
 import StateContext from "./StateContext"

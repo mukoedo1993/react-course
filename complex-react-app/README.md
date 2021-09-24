@@ -43,5 +43,13 @@ npm install react-transition-group
 npm install socket.io-client
 ```
 
+```
+#course 77th:
+npm install dotenv-webpack clean-webpack-plugin html-webpack-harddisk-plugin html-webpack-plugin fs-extra
+npm install express
+
+npm run previewDist # view the actual value we will view which will be pushed up to the web
+```
+
 course 14th Notes:
 [contentBase was renamed to static in webpack.config.js file](https://github.com/webpack/webpack-dev-server/issues/2958#issuecomment-757141969)
