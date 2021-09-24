@@ -13,9 +13,9 @@ import { Link } from "react-router-dom"
 
 import io from "socket.io-client"
 
-const socket = io("http://localhost:8080")
-
 function Chat() {
+  const socket = useRef(null) //We don't want React to rerender it, but imperatively control it. So our web browser could consistently hold on to the socket connection.
+
   const chatField = useRef(null)
 
   const chatLog = useRef(null)
@@ -36,11 +36,15 @@ function Chat() {
   }, [appState.isChatOpen])
 
   useEffect(() => {
-    socket.on("chatFromServer", (message) => {
+    socket.current = io("http://localhost:8080")
+
+    socket.current.on("chatFromServer", (message) => {
       setState((draft) => {
         draft.chatMessages.push(message)
       })
     })
+
+    return () => socket.current.disconnect()
   }, []) //load the already existent messages
 
   useEffect(() => {
@@ -61,7 +65,7 @@ function Chat() {
     e.preventDefault()
 
     //Send message to chat server
-    socket.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
+    socket.current.emit("chatFromBrowser", { message: state.fieldValue, token: appState.user.token })
 
     setState((draft) => {
       //Add message to state collection of messages

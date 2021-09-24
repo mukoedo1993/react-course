@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from "react"
+import React, { useState, useReducer, useEffect, Suspense } from "react"
 import ReactDOM from "react-dom"
 
 import { useImmerReducer } from "use-immer"
@@ -16,6 +16,8 @@ import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
 
 //My Components
+import LoadingDotsIcon from "./components/LoadingDotsIcon"
+
 import Header from "./components/Header"
 import Home from "./components/Home"
 import HomeGuest from "./components/HomeGuest"
@@ -23,9 +25,11 @@ import Footer from "./components/Footer"
 
 import About from "./components/About"
 import Terms from "./components/Terms"
-import CreatePost from "./components/CreatePost"
 
-import ViewSinglePost from "./components/ViewSinglePost"
+const CreatePost = React.lazy(() => import("./components/CreatePost"))
+
+const ViewSinglePost = React.lazy(() => import("./components/ViewSinglePost"))
+
 import FlashMessages from "./components/FlashMessages"
 
 import Profile from "./components/Profile"
@@ -34,9 +38,9 @@ import EditPost from "./components/EditPost"
 
 import NotFound from "./components/NotFound"
 
-import Search from "./components/Search"
+const Search = React.lazy(() => import("./components/Search"))
 
-import Chat from "./components/Chat"
+const Chat = React.lazy(() => import("./components/Chat"))
 
 function Main() {
   const initialState = {
@@ -132,37 +136,39 @@ function Main() {
         <BrowserRouter>
           <FlashMessages messages={state.flashMessages} />
           <Header /> {/*Our header depends on loggedIn and setLoggedIn*/}
-          <Switch>
-            <Route path="/profile/:username">
-              {" "}
-              {/*path's parameter username is acceeeible by useParams. Ref: https://reactrouter.com/web/api/Hooks/useparams*/}
-              <Profile />
-            </Route>
-            <Route path="/" exact>
-              {state.loggedIn ? <Home /> : <HomeGuest />}
-            </Route>
-            <Route path="/post/:id" exact>
-              <ViewSinglePost />
-            </Route>{" "}
-            {/*:id works like a variable, unique to each single post. */}
-            <Route path="/post/:id/edit" exact>
-              <EditPost />
-            </Route>
-            <Route path="/create-post">
-              <CreatePost />
-            </Route>
-            <Route path="/about-us" exact>
-              <About />
-            </Route>
-            <Route path="/terms" exact>
-              <Terms />
-            </Route>
-            {/*last Route below is our fallback route*/}
-            <Route>
-              <NotFound />
-            </Route>
-          </Switch>
-          {/* For the CSSTransition part below:
+          <Suspense fallback={<LoadingDotsIcon />}>
+            <Switch>
+              {/*Suspense for the whole Switch. Because all contents of Switch are dependent on the current URL.*/}
+              <Route path="/profile/:username">
+                {" "}
+                {/*path's parameter username is acceeeible by useParams. Ref: https://reactrouter.com/web/api/Hooks/useparams*/}
+                <Profile />
+              </Route>
+              <Route path="/" exact>
+                {state.loggedIn ? <Home /> : <HomeGuest />}
+              </Route>
+              <Route path="/post/:id" exact>
+                <ViewSinglePost />
+              </Route>{" "}
+              {/*:id works like a variable, unique to each single post. */}
+              <Route path="/post/:id/edit" exact>
+                <EditPost />
+              </Route>
+              <Route path="/create-post">
+                <CreatePost />
+              </Route>
+              <Route path="/about-us" exact>
+                <About />
+              </Route>
+              <Route path="/terms" exact>
+                <Terms />
+              </Route>
+              {/*last Route below is our fallback route*/}
+              <Route>
+                <NotFound />
+              </Route>
+            </Switch>
+            {/* For the CSSTransition part below:
           timeout: how many ms does it take for your CSS transition to complete? 330.
               in: if it is false, then search will be hidden.
               classNames: NOT className
@@ -171,10 +177,15 @@ function Main() {
               classNames: first load: '<classNames>-enter' for about {timeout} seconds. Then... '<classNames>-enter-active'. And, immediately you exit it, '<classNames>-exit' class will be added. '<classNames>-exit-active',after a few ms, will be added, i.e., zoom-out effect.
               After a given time, these classes will be completely moved away from the DOM, includeing the '<classNames>'
             */}
+          </Suspense>
           <CSSTransition timeout={330} in={state.isSearchOpen} classNames="search-overlay" unmountOnExit>
-            <Search />
+            <div className="search-overlay">
+              <Suspense fallback="">
+                <Search />
+              </Suspense>
+            </div>
           </CSSTransition>
-          <Chat />
+          <Suspense fallback="">{state.loggedIn && <Chat />}</Suspense>
           <Footer />
         </BrowserRouter>
       </DispatchContext.Provider>
