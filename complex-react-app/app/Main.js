@@ -9,7 +9,7 @@ import { CSSTransition } from "react-transition-group"
 
 import Axios from "axios"
 
-Axios.defaults.baseURL = process.env.BACKENDURL || "" //for deploying using DOTENV file.
+Axios.defaults.baseURL = process.env.BACKENDURL || "https://tom-kimi-backend-react.herokuapp.com/" //for deploying using DOTENV file.
 
 //Context
 import StateContext from "./StateContext"
