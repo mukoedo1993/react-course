@@ -7,13 +7,14 @@ Notes for the course:
 # How to use it?
 You could actually use this repo directly in your local development.<br>
 Firstly, create your own .env file following my DOTENV file's instructions.<br>
-Open two terminals. <br>
+git clone this repo:<br>
+Open two terminals at the root of this repo: <br>
 Run<br>
 ```
 cd *api
 npm run start #to support your backend
 ```
-<br>
+And also on another terminal:
 ```
 cd *app
 npm run dev #to support your frontend
