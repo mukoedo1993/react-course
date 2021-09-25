@@ -1,10 +1,6 @@
 # react-course
-
-Notes for the course:
-[react for the rest of us, udemy for course 2nd to 10th](https://www.udemy.com/share/102WQm3@x9BWMuSen5qCx3DvbfRWrx6E2gtaE3YWx5LM2GkEamWH-aMMqT8VHdEnB135C7gQ/)
-
-
-# How to use it?
+This is my follow-up works and notes for the Udemy react course taught by Brad Schiff.
+## How to use it?
 You could actually use this repo directly in your local development.<br>
 Firstly, create your own .env file following my DOTENV file's instructions.<br>
 git clone this repo:<br>
