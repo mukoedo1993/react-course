@@ -1,0 +1,4 @@
+#.env file: delete this line and 2nd line.
+
+CONNECTIONSTRING="<your_connection_string_of_mongodb>"
+JWTSECRET="<your_secret_script>"
